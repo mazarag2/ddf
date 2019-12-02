@@ -42,12 +42,20 @@ module.exports = Marionette.LayoutView.extend({
     this.model.destroy()
   },
   onChange(state) {
+<<<<<<< HEAD
     const { attribute, comparator, value, settingsModel } = state
+=======
+    const { attribute, comparator, value,settingsModel } = state
+>>>>>>> 20b03a23ed... 5652 disable dropdown changes
     this.model.set({
       type: attribute,
       comparator,
       value: [value],
+<<<<<<< HEAD
       settingsModel,
+=======
+      settingsModel
+>>>>>>> 20b03a23ed... 5652 disable dropdown changes
     })
   },
   turnOnEditing() {

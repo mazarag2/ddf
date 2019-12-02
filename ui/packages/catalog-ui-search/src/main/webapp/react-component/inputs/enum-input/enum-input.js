@@ -13,27 +13,23 @@
  *
  **/
 import React, { useState } from 'react'
-
 import Dropdown from '../../dropdown'
-import { Menu, MenuItemDisabled } from '../../menu'
+import { Menu, MenuItem,MenuItemDisabled } from '../../menu'
 import TextField from '../../text-field'
 import styled from 'styled-components'
 import { getFilteredSuggestions, inputMatchesSuggestions } from './enumHelper'
 import PropTypes from 'prop-types'
 const sources = require('../../../component/singletons/sources-instance')
-
 const TextWrapper = styled.div`
   padding: ${({ theme }) => theme.minimumSpacing};
 `
 const EnumMenuItem = props => (
   <MenuItemDisabled {...props} style={{ paddingLeft: '1.5rem' }} />
 )
-
 const UnsupportedAttribute = styled.div`
 border-style: solid
 border-color: red
 `
-
 const isAttributeDisabled = (AllSupportedAttributes, currValue) => {
   //All attributes are supprted
   if (AllSupportedAttributes.length == 0) {
@@ -97,6 +93,7 @@ const EnumInput = ({
 }) => {
   const [input, setInput] = useState('')
 
+
   const selected = suggestions.find(suggestion => suggestion.value === value)
 
   const filteredSuggestions = getFilteredSuggestions(
@@ -136,10 +133,12 @@ const EnumInput = ({
             >
               {suggestion.label}
             </EnumMenuItem>
-          )
-        })}
-      </Menu>
-    </Dropdown>
+
+           )
+      })}
+    </Menu>
+  </Dropdown>
+
   )
   return (
     <div>
@@ -175,5 +174,7 @@ EnumInput.propTypes = {
 
   /** Should custom values be allowed? */
   allowCustom: PropTypes.bool,
+
+
 }
 export default EnumInput

@@ -125,13 +125,12 @@ module.exports = Marionette.LayoutView.extend({
         this.showAdvanced(this.queryAdvanced.currentView.getFilters())
       }
     )
+
   },
   onDestroy() {
     unregister(this.action)
   },
   showAdvanced(filter) {
-    console.log(this.querySettings)
-    console.log(this.querySettings.options)
     //this.listenTo(this.querySettings.currentView.model,'change:src',this.showAdvanced(filter))
     this.queryAdvanced.show(
       new FilterBuilderView({
@@ -146,12 +145,12 @@ module.exports = Marionette.LayoutView.extend({
         isForm: this.options.isForm || false,
         isFormBuilder: this.options.isFormBuilder || false,
         settingsModel: this.querySettings.currentView.model,
+
       })
     )
     console.log(this.querySettings.currentView.toJSON())
     console.log(this.querySettings.currentView.model)
     this.queryAdvanced.currentView.turnOffEditing()
-
     this.edit()
   },
   focus() {
