@@ -28,9 +28,8 @@ const FilterAttributeDropdown = ({
   includedAttributes,
   editing,
   value,
-  settingsModel
+  settingsModel,
 }) => {
-
   console.log(settingsModel)
   return (
     <Root>

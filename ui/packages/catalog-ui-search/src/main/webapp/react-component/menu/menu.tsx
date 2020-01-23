@@ -51,12 +51,7 @@ const foreground = (props: any) => {
   }
 }
 
-const ItemRoot = 
-
-
-    styled.div<{ active: boolean; selected: boolean}>`
-
-
+const ItemRoot = styled.div<{ active: boolean; selected: boolean }>`
   position: relative;
   padding: 0px ${({ theme }) => theme.minimumSpacing};
   padding-right: ${({ theme }) => theme.minimumButtonSize};
@@ -80,8 +75,6 @@ const ItemRoot =
   background: ${props => (props.active ? background(props) : 'inherit')};
   color: ${foreground};
 `
-
-
 
 const DocumentListener = (props: any) => {
   useEffect(() => {
@@ -205,12 +198,12 @@ export class Menu extends React.Component<MenuProps, MenuState> {
             ? value.indexOf(child.props.value) !== -1
             : value === child.props.value,
           onClick: () => {
-                this.onChange(child.props.value)
-          }, 
+            this.onChange(child.props.value)
+          },
 
           active: this.state.active === child.props.value,
           onHover: () => this.onHover(child.props.value),
-         
+
           ...child.props,
         })
       }
@@ -240,14 +233,10 @@ type MenuItemProps = {
   selected?: any
   active?: any
   onHover?: any
-  
-
 }
 
-
 export const MenuItem = (props: MenuItemProps) => {
-  const { value, children, selected, onClick, active, onHover, style} = props
-
+  const { value, children, selected, onClick, active, onHover, style } = props
   return (
     <ItemRoot
       selected={selected}
@@ -257,40 +246,32 @@ export const MenuItem = (props: MenuItemProps) => {
       onFocus={() => onHover(value)}
       tabIndex={0}
       onClick={() => onClick(value)}
-      
     >
       {children || value}
     </ItemRoot>
   )
 }
 
-
 type MenutItemPropsDisabled = {
-
-    /** A value to represent the current Item */
-    value?: any
-    /**
-     * Children to display for menu item.
-     *
-     * @default value
-     */
-    children?: any
-    /** Optional styles for root element. */
-    style?: object
-    onClick?: any
-    selected?: any
-    active?: any
-    onHover?: any
-    disabled?:any
-    title?:any
-
+  /** A value to represent the current Item */
+  value?: any
+  /**
+   * Children to display for menu item.
+   *
+   * @default value
+   */
+  children?: any
+  /** Optional styles for root element. */
+  style?: object
+  onClick?: any
+  selected?: any
+  active?: any
+  onHover?: any
+  disabled?: any
+  title?: any
 }
 
-
-const ItemRootDisabled = 
-
-
-    styled.option<{ active: boolean;  disabled: boolean}>`
+const ItemRootDisabled = styled.option<{ active: boolean; disabled: boolean }>`
   position: relative;
   padding: 0px ${({ theme }) => theme.minimumSpacing};
   padding-right: ${({ theme }) => theme.minimumButtonSize};
@@ -307,16 +288,27 @@ const ItemRootDisabled =
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  ${({ theme, active,disabled }) =>
-    active && !disabled ? `box-shadow: inset 0px 0px 0px 1px  ${theme.primaryColor};` : ''}
+  ${({ theme, active, disabled }) =>
+    active && !disabled
+      ? `box-shadow: inset 0px 0px 0px 1px  ${theme.primaryColor};`
+      : ''}
   ${({ active }) => (active ? 'font-weight: bold;' : '')}
-  ${({ active,disabled }) => (active && !disabled ? after : '')}
-  background: ${(props) => (props.active && !props.disabled? background(props) : 'inherit')};
-  color: ${(props) => props.disabled ? 'lightgrey' : foreground};
+  ${({ active, disabled }) => (active && !disabled ? after : '')}
+  background: ${props =>
+    props.active && !props.disabled ? background(props) : 'inherit'};
+  color: ${props => (props.disabled ? 'lightgrey' : foreground)};
 `
 export const MenuItemDisabled = (props: MenutItemPropsDisabled) => {
-
-  const { value, children, onClick, active, onHover, style,disabled,title} = props
+  const {
+    value,
+    children,
+    onClick,
+    active,
+    onHover,
+    style,
+    disabled,
+    title,
+  } = props
   return (
     <ItemRootDisabled
       disabled={disabled}
@@ -325,9 +317,8 @@ export const MenuItemDisabled = (props: MenutItemPropsDisabled) => {
       onMouseEnter={() => onHover(value)}
       onFocus={() => onHover(value)}
       tabIndex={0}
-      onClick={() => onClick(value)} 
-      title = {title}
-
+      onClick={() => onClick(value)}
+      title={title}
     >
       {children || value}
     </ItemRootDisabled>

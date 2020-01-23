@@ -14,100 +14,78 @@
  **/
 import React, { useState } from 'react'
 
-const Marionette = require('marionette')
 import Dropdown from '../../dropdown'
-import { Menu, MenuItem,MenuItemDisabled } from '../../menu'
+import { Menu, MenuItemDisabled } from '../../menu'
 import TextField from '../../text-field'
 import styled from 'styled-components'
 import { getFilteredSuggestions, inputMatchesSuggestions } from './enumHelper'
 import PropTypes from 'prop-types'
-const sources = require('../../../component/singletons/sources-instance');
-
+const sources = require('../../../component/singletons/sources-instance')
 
 const TextWrapper = styled.div`
   padding: ${({ theme }) => theme.minimumSpacing};
 `
 const EnumMenuItem = props => (
-  <MenuItemDisabled {...props} style={{ paddingLeft: '1.5rem'}}/>
+  <MenuItemDisabled {...props} style={{ paddingLeft: '1.5rem' }} />
 )
-
-
-
-
-
-
 
 const UnsupportedAttribute = styled.div`
 border-style: solid
 border-color: red
 `
 
-const isAttributeDisabled = (AllSupportedAttributes,currValue) => {
-
+const isAttributeDisabled = (AllSupportedAttributes, currValue) => {
   //All attributes are supprted
-  if(AllSupportedAttributes.length == 0){
-    return false;
+  if (AllSupportedAttributes.length == 0) {
+    return false
   }
   //If attribute is supporteed in dont disable the option
-
-  if(AllSupportedAttributes.indexOf(currValue) >= 0){
-    return false;
+  if (AllSupportedAttributes.indexOf(currValue) >= 0) {
+    return false
   }
- //attribute was not found in the supported list therefore disbale the option
-  return true;
-
+  //attribute was not found in the supported list therefore disbale the option
+  return true
 }
-const isAttributeUnsupported = (currValue,settingsModel) => {
+const isAttributeUnsupported = (currValue, settingsModel) => {
   // if no source is selected gather all supportedAttributes from all available sources
-  if(settingsModel.length == 0){
-      let AllSupportedAttributes = sources.models.map(source => {
-
-        //NDL EAST is only supported in NCL-Search not in advanced search
-        if(!(source.id == "NDL-East")){
-
-          return source.attributes.supportedAttributes;
-
-        }
-        return [];
-      });
-      AllSupportedAttributes = AllSupportedAttributes.flat()
-
-      return isAttributeDisabled(AllSupportedAttributes,currValue);
-
-  }
-  else{
-
-    let sourceModelsSelected = sources.models.filter(source => settingsModel.includes(source.id));
-    
-    
+  if (settingsModel.length == 0) {
+    let AllSupportedAttributes = sources.models.map(source => {
+      //NDL EAST is only supported in NCL-Search not in advanced search
+      if (!(source.id == 'NDL-East')) {
+        return source.attributes.supportedAttributes
+      }
+      return []
+    })
+    AllSupportedAttributes = AllSupportedAttributes.flat()
+    AllSupportedAttributes.push('ext.acquisition-status')
+    return isAttributeDisabled(AllSupportedAttributes, currValue)
+  } else {
+    let sourceModelsSelected = sources.models.filter(source =>
+      settingsModel.includes(source.id)
+    )
 
     let AllSupportedAttributes = sourceModelsSelected.map(sourceSelected => {
-
-
-      if(!(sourceSelected.id == "NDL-East")){
-
-        return sourceSelected.attributes.supportedAttributes;
-
+      if (sourceSelected.id == 'GIMS_GIN') {
+        return ['ext.alternate-identifier-qualifier']
       }
-      return [];
-      
-    });
-    
-    AllSupportedAttributes = AllSupportedAttributes.flat()
-    return isAttributeDisabled(AllSupportedAttributes,currValue);
+      if (!(sourceSelected.id == 'NDL-East')) {
+        return sourceSelected.attributes.supportedAttributes
+      }
+      return []
+    })
 
+    AllSupportedAttributes = AllSupportedAttributes.flat()
+    return isAttributeDisabled(AllSupportedAttributes, currValue)
   }
 }
 
-const isAttributeUnsupportedHelper = (settingsModel,suggestion) => {
-
- //if settingsModel is passed down from a parent componenet , proceed to check if the  attribute is unsupported
-  return settingsModel && isAttributeUnsupported(suggestion.value,settingsModel.attributes.src); 
-
-
+const isAttributeUnsupportedHelper = (settingsModel, suggestion) => {
+  //if settingsModel is passed down from a parent componenet , proceed to check if the  attribute is unsupported
+  return (
+    settingsModel &&
+    isAttributeUnsupported(suggestion.value, settingsModel.attributes.src)
+  )
 }
-
-
 
 const EnumInput = ({
   allowCustom,
@@ -115,10 +93,10 @@ const EnumInput = ({
   onChange,
   suggestions,
   value,
-  settingsModel
+  settingsModel,
 }) => {
   const [input, setInput] = useState('')
-  
+
   const selected = suggestions.find(suggestion => suggestion.value === value)
 
   const filteredSuggestions = getFilteredSuggestions(
@@ -130,57 +108,58 @@ const EnumInput = ({
   const displayInput = !inputMatchesSuggestions(input, suggestions, matchCase)
 
   const attributeDropdown = (
-
-
     <Dropdown label={(selected && selected.label) || value}>
-    <TextWrapper>
-      <TextField
-        autoFocus
-        value={input}
-        placeholder={'Type to Filter'}
-        onChange={setInput}
-      />
-    </TextWrapper>
-    <Menu value={value} onChange={onChange} class="fa">
-      {allowCustom &&
-        displayInput && (
-          <EnumMenuItem value={input}>{input} (custom)</EnumMenuItem>
-        )}
-      {filteredSuggestions.map(suggestion => {
-        return (
-          
+      <TextWrapper>
+        <TextField
+          autoFocus
+          value={input}
+          placeholder={'Type to Filter'}
+          onChange={setInput}
+        />
+      </TextWrapper>
+      <Menu value={value} onChange={onChange} class="fa">
+        {allowCustom &&
+          displayInput && (
+            <EnumMenuItem value={input}>{input} (custom)</EnumMenuItem>
+          )}
+        {filteredSuggestions.map(suggestion => {
+          return (
             <EnumMenuItem
-                title={isAttributeUnsupportedHelper(settingsModel,suggestion) ? 'Attribute is unsupported by the content store selected' : ''}  
-                key={suggestion.value} 
-                value={suggestion.value} 
-                disabled={isAttributeUnsupportedHelper(settingsModel,suggestion)}
-                >
-                {suggestion.label}
-
+              title={
+                isAttributeUnsupportedHelper(settingsModel, suggestion)
+                  ? 'Attribute is unsupported by the content store selected'
+                  : ''
+              }
+              key={suggestion.value}
+              value={suggestion.value}
+              disabled={isAttributeUnsupportedHelper(settingsModel, suggestion)}
+            >
+              {suggestion.label}
             </EnumMenuItem>
-          
-           )
-      })}
-    </Menu>
-  </Dropdown>
-
+          )
+        })}
+      </Menu>
+    </Dropdown>
   )
   return (
-  <div>
-   
-   {isAttributeUnsupportedHelper(settingsModel,selected) ? (
-   <div>
-
-    <UnsupportedAttribute title = "Attribute is unsupported by the content store">
-      {attributeDropdown}
-    </UnsupportedAttribute>
-    <div style={{color : 'red'}}> This selection does not work with the content store selected </div>
-    </div>) : (<div>{attributeDropdown}</div>)
-   }
-   </div>
-
+    <div>
+      {isAttributeUnsupportedHelper(settingsModel, selected) ? (
+        <div>
+          <UnsupportedAttribute title="Attribute is unsupported by the content store">
+            {attributeDropdown}
+          </UnsupportedAttribute>
+          <div style={{ color: 'red' }}>
+            {' '}
+            This selection does not work with the content store selected{' '}
+          </div>
+        </div>
+      ) : (
+        <div>{attributeDropdown}</div>
+      )}
+    </div>
   )
 }
+
 EnumInput.propTypes = {
   /** The current selected value. */
   value: PropTypes.string,
@@ -196,7 +175,5 @@ EnumInput.propTypes = {
 
   /** Should custom values be allowed? */
   allowCustom: PropTypes.bool,
-
-
 }
 export default EnumInput

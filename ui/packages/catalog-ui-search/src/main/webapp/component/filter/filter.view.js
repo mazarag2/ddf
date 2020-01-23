@@ -42,12 +42,12 @@ module.exports = Marionette.LayoutView.extend({
     this.model.destroy()
   },
   onChange(state) {
-    const { attribute, comparator, value,settingsModel } = state
+    const { attribute, comparator, value, settingsModel } = state
     this.model.set({
       type: attribute,
       comparator,
       value: [value],
-      settingsModel
+      settingsModel,
     })
   },
   turnOnEditing() {
