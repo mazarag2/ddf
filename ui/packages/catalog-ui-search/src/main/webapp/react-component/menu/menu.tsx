@@ -51,10 +51,7 @@ const foreground = (props: any) => {
   }
 }
 
-const ItemRoot = 
-
-
-    styled.div<{ active: boolean; selected: boolean}>`
+const ItemRoot = styled.div<{ active: boolean; selected: boolean }>`
 
 
   position: relative;
@@ -80,8 +77,6 @@ const ItemRoot =
   background: ${props => (props.active ? background(props) : 'inherit')};
   color: ${foreground};
 `
-
-
 
 const DocumentListener = (props: any) => {
   useEffect(() => {
@@ -239,13 +234,9 @@ type MenuItemProps = {
   selected?: any
   active?: any
   onHover?: any
-  
-
 }
 
-
 export const MenuItem = (props: MenuItemProps) => {
-
   const { value, children, selected, onClick, active, onHover, style } = props
 
   return (
@@ -257,13 +248,11 @@ export const MenuItem = (props: MenuItemProps) => {
       onFocus={() => onHover(value)}
       tabIndex={0}
       onClick={() => onClick(value)}
-      
     >
       {children || value}
     </ItemRoot>
   )
 }
-
 
 type MenutItemPropsDisabled = {
   /** A value to represent the current Item */
@@ -332,7 +321,6 @@ export const MenuItemDisabled = (props: MenutItemPropsDisabled) => {
       tabIndex={0}
       onClick={() => onClick(value)}
       title={title}
-
     >
       {children || value}
     </ItemRootDisabled>

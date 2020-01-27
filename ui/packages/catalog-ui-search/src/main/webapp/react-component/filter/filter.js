@@ -84,7 +84,6 @@ class Filter extends React.Component {
   }
 
   render() {
-
     return (
       <Root>
         <FilterRearrange className="filter-rearrange">

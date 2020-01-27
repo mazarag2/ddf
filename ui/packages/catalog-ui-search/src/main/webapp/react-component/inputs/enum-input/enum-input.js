@@ -14,7 +14,7 @@
  **/
 import React, { useState } from 'react'
 import Dropdown from '../../dropdown'
-import { Menu, MenuItem,MenuItemDisabled } from '../../menu'
+import { Menu, MenuItemDisabled } from '../../menu'
 import TextField from '../../text-field'
 import styled from 'styled-components'
 import { getFilteredSuggestions, inputMatchesSuggestions } from './enumHelper'
@@ -44,7 +44,7 @@ const isAttributeDisabled = (AllSupportedAttributes, currValue) => {
 }
 const isAttributeUnsupported = (currValue, settingsModel) => {
   // if no source is selected gather all supportedAttributes from all available sources
-  if (settingsModel.length == 0) {
+  if (settingsModel == undefined || settingsModel.length == 0) {
     let AllSupportedAttributes = sources.models.map(source => {
       //NDL EAST is only supported in NCL-Search not in advanced search
       if (!(source.id == 'NDL-East')) {
@@ -92,10 +92,9 @@ const EnumInput = ({
   settingsModel,
 }) => {
   const [input, setInput] = useState('')
-
-
+  console.log(sources)
   const selected = suggestions.find(suggestion => suggestion.value === value)
-
+  console.log(settingsModel)
   const filteredSuggestions = getFilteredSuggestions(
     input,
     suggestions,
@@ -133,12 +132,10 @@ const EnumInput = ({
             >
               {suggestion.label}
             </EnumMenuItem>
-
-           )
-      })}
-    </Menu>
-  </Dropdown>
-
+          )
+        })}
+      </Menu>
+    </Dropdown>
   )
   return (
     <div>
@@ -174,7 +171,5 @@ EnumInput.propTypes = {
 
   /** Should custom values be allowed? */
   allowCustom: PropTypes.bool,
-
-
 }
 export default EnumInput

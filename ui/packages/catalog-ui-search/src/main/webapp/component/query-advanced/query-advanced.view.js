@@ -125,7 +125,6 @@ module.exports = Marionette.LayoutView.extend({
         this.showAdvanced(this.queryAdvanced.currentView.getFilters())
       }
     )
-
   },
   onDestroy() {
     unregister(this.action)
@@ -145,7 +144,6 @@ module.exports = Marionette.LayoutView.extend({
         isForm: this.options.isForm || false,
         isFormBuilder: this.options.isFormBuilder || false,
         settingsModel: this.querySettings.currentView.model,
-
       })
     )
     console.log(this.querySettings.currentView.toJSON())
