@@ -44,7 +44,6 @@ import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.Route;
 import org.apache.camel.component.servlet.ServletEndpoint;
-import org.apache.camel.converter.ObjectConverter;
 import org.apache.camel.http.common.CamelServlet;
 import org.apache.camel.http.common.DefaultHttpRegistry;
 import org.apache.camel.http.common.HttpConsumer;
@@ -86,7 +85,7 @@ public class HttpProxyCamelHttpTransportServlet extends CamelServlet implements 
 
     String ignore = config.getInitParameter("ignoreDuplicateServletName");
     if (ignore != null) {
-      Boolean bool = ObjectConverter.toBoolean(ignore);
+      Boolean bool = Boolean.parseBoolean(ignore);
       if (bool != null) {
         ignoreDuplicateServletName = bool;
       } else {
